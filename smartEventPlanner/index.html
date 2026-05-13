@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Akıllı Etkinlik Planlayıcı</title>
+
+  <!-- Bootstrap 5 CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+
+  <!-- Modüler CSS -->
+  <link rel="stylesheet" href="css/variables.css"/>
+  <link rel="stylesheet" href="css/layout.css"/>
+  <link rel="stylesheet" href="css/sidebar.css"/>
+  <link rel="stylesheet" href="css/components.css"/>
+  <link rel="stylesheet" href="css/events.css"/>
+  <link rel="stylesheet" href="css/forms.css"/>
+  <link rel="stylesheet" href="css/stats.css"/>
+</head>
+
+<body>
+
+<!-- Mobil Sidebar Toggle -->
+<button id="sidebarToggle" aria-label="Menüyü aç">
+  <i class="bi bi-list"></i>
+</button>
+<div id="sidebarOverlay"></div>
+
+<!-- Sidebar -->
+<nav id="sidebar">
+  <div class="sidebar-logo d-flex align-items-center gap-3">
+    <div class="logo-icon"><i class="bi bi-calendar-event-fill"></i></div>
+    <div>
+      <h5>EventPlanner</h5>
+      <small>BMT216 Dönem Projesi</small>
+    </div>
+  </div>
+
+  <div class="nav-section-label">Ana Menü</div>
+  <ul class="sidebar-nav nav flex-column">
+    <li class="nav-item">
+      <a class="nav-link active" href="#" id="menuEvents">
+        <i class="bi bi-calendar3"></i> Etkinliklerim
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#" id="menuAdd">
+        <i class="bi bi-plus-circle"></i> Yeni Etkinlik Ekle
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#" id="menuStats">
+        <i class="bi bi-bar-chart-line"></i> İstatistikler
+      </a>
+    </li>
+  </ul>
+
+  <div class="nav-section-label">Kategoriler</div>
+  <div class="cat-filter-group">
+    <button class="cat-btn active" data-cat="Tümü">
+      <span class="dot" style="background:#8b949e;"></span> Tümü
+    </button>
+    <button class="cat-btn" data-cat="İş">
+      <span class="dot" style="background:#60a5fa;"></span> İş
+    </button>
+    <button class="cat-btn" data-cat="Sosyal">
+      <span class="dot" style="background:#fbbf24;"></span> Sosyal
+    </button>
+    <button class="cat-btn" data-cat="Eğitim">
+      <span class="dot" style="background:#34d399;"></span> Eğitim
+    </button>
+    <button class="cat-btn" data-cat="Kişisel">
+      <span class="dot" style="background:#a78bfa;"></span> Kişisel
+    </button>
+  </div>
+
+  <div class="mt-auto px-4 pb-4 pt-2">
+    <small style="color:var(--text-muted);font-size:.7rem;">
+      <i class="bi bi-shield-check me-1"></i>Veriler yerel olarak saklanır
+    </small>
+  </div>
+</nav>
+
+<!-- Ana İçerik -->
+<main id="mainContent">
+
+  <!-- Üst Bar -->
+  <div class="topbar">
+    <div class="d-flex align-items-center gap-3">
+      <h2 id="pageTitle">Etkinliklerim</h2>
+      <span class="badge-count" id="eventCountBadge">0 etkinlik</span>
+    </div>
+    <div style="color:var(--text-muted);font-size:.8rem;">
+      <i class="bi bi-clock me-1"></i><span id="currentTime"></span>
+    </div>
+  </div>
+
+  <!-- Etkinliklerim Bölümü -->
+  <div id="eventsSection">
+    <div class="row g-3 mb-4" id="summaryCards">
+      <div class="col-6 col-md-3">
+        <div class="stat-card">
+          <div class="stat-icon" style="background:rgba(59,130,246,.15);color:#60a5fa;">
+            <i class="bi bi-calendar3"></i>
+          </div>
+          <div class="stat-value" id="totalCount">0</div>
+          <div class="stat-label">Toplam Etkinlik</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card">
+          <div class="stat-icon" style="background:rgba(16,185,129,.15);color:#34d399;">
+            <i class="bi bi-check2-circle"></i>
+          </div>
+          <div class="stat-value" id="doneCount">0</div>
+          <div class="stat-label">Tamamlanan</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card">
+          <div class="stat-icon" style="background:rgba(245,158,11,.15);color:#fbbf24;">
+            <i class="bi bi-hourglass-split"></i>
+          </div>
+          <div class="stat-value" id="pendingCount">0</div>
+          <div class="stat-label">Bekleyen</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card">
+          <div class="stat-icon" style="background:rgba(167,139,250,.15);color:#a78bfa;">
+            <i class="bi bi-tag"></i>
+          </div>
+          <div class="stat-value" id="catCount">0</div>
+          <div class="stat-label">Kategori</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Geri Sayım -->
+    <div id="countdownSection" style="display:none;">
+      <h6><i class="bi bi-alarm me-1"></i>Yaklaşan Etkinlik</h6>
+      <div class="event-name" id="cdEventName">—</div>
+      <div class="countdown-boxes">
+        <div class="cd-box"><div class="cd-val" id="cdDays">00</div><div class="cd-lbl">Gün</div></div>
+        <div class="cd-box"><div class="cd-val" id="cdHours">00</div><div class="cd-lbl">Saat</div></div>
+        <div class="cd-box"><div class="cd-val" id="cdMins">00</div><div class="cd-lbl">Dakika</div></div>
+        <div class="cd-box"><div class="cd-val" id="cdSecs">00</div><div class="cd-lbl">Saniye</div></div>
+      </div>
+    </div>
+
+    <div id="eventList"></div>
+
+    <div id="emptyState" class="empty-state">
+      <i class="bi bi-calendar-x"></i>
+      <p>Henüz etkinlik eklenmedi.<br>
+        <a href="#" id="goAddLink" style="color:var(--accent);">Hemen bir tane ekle →</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Yeni Etkinlik Bölümü -->
+  <div id="addSection" style="display:none;">
+    <div class="form-panel">
+      <h5 class="mb-4"><i class="bi bi-plus-circle me-2" style="color:var(--accent);"></i>Yeni Etkinlik Ekle</h5>
+      <div class="alert alert-success d-flex align-items-center gap-2 mb-3" id="successAlert" style="display:none !important;background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.3);color:#34d399;border-radius:10px;">
+        <i class="bi bi-check-circle-fill"></i>
+        <span>Etkinlik başarıyla eklendi!</span>
+      </div>
+      <form id="eventForm" novalidate>
+        <div class="row g-3">
+          <div class="col-12">
+            <label class="form-label">Etkinlik Adı <span style="color:var(--danger)">*</span></label>
+            <input type="text" class="form-control" id="eventName" placeholder="Örn: Takım toplantısı, Doğum günü..." required/>
+            <div class="invalid-feedback">Etkinlik adı boş bırakılamaz.</div>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Tarih & Saat <span style="color:var(--danger)">*</span></label>
+            <input type="datetime-local" class="form-control" id="eventDate" required/>
+            <div class="invalid-feedback">Lütfen bir tarih seçin.</div>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Kategori <span style="color:var(--danger)">*</span></label>
+            <select class="form-select" id="eventCat" required>
+              <option value="">Kategori seçin...</option>
+              <option value="İş">💼 İş</option>
+              <option value="Sosyal">🎉 Sosyal</option>
+              <option value="Eğitim">📚 Eğitim</option>
+              <option value="Kişisel">🌟 Kişisel</option>
+            </select>
+            <div class="invalid-feedback">Kategori seçilmedi.</div>
+          </div>
+          <div class="col-12">
+            <label class="form-label">Açıklama <span style="color:var(--text-muted);font-weight:400;">(isteğe bağlı)</span></label>
+            <textarea class="form-control" id="eventDesc" rows="3" placeholder="Etkinlik hakkında notlar..."></textarea>
+          </div>
+          <div class="col-12 d-flex gap-3 mt-2">
+            <button type="submit" class="btn btn-primary-custom">
+              <i class="bi bi-plus-lg me-2"></i>Etkinliği Kaydet
+            </button>
+            <button type="reset" class="btn btn-reset-custom">
+              <i class="bi bi-x-lg me-1"></i>Temizle
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- İstatistikler Bölümü -->
+  <div id="statsSection" style="display:none;">
+    <div class="row g-3">
+      <div class="col-lg-6">
+        <div class="form-panel h-100">
+          <h5 class="mb-4"><i class="bi bi-pie-chart me-2" style="color:var(--accent);"></i>Kategori Dağılımı</h5>
+          <div id="catBars"></div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="form-panel h-100">
+          <h5 class="mb-4"><i class="bi bi-activity me-2" style="color:var(--success);"></i>Durum Özeti</h5>
+          <div class="mb-3">
+            <div class="stat-bar-label"><span>Tamamlanan</span><span id="pctDone">0%</span></div>
+            <div class="stat-bar-bg"><div class="stat-bar-fill" id="barDone" style="width:0%;background:var(--success);"></div></div>
+          </div>
+          <div class="mb-3">
+            <div class="stat-bar-label"><span>Bekleyen</span><span id="pctPending">0%</span></div>
+            <div class="stat-bar-bg"><div class="stat-bar-fill" id="barPending" style="width:0%;background:var(--warning);"></div></div>
+          </div>
+          <h6 class="upcoming-label">Yaklaşan Etkinlikler</h6>
+          <div id="upcomingList"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<!-- Bootstrap 5 JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Modüler JS (sıra önemli) -->
+<script src="js/storage.js"></script>
+<script src="js/helpers.js"></script>
+<script src="js/countdown.js"></script>
+<script src="js/render.js"></script>
+<script src="js/stats.js"></script>
+<script src="js/navigation.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,69 @@
+/* ============================================================
+   layout.css
+   Reset, body, ana içerik alanı, üst bar, scrollbar
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg-main);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+h1,h2,h3,h4,h5 { font-family: 'DM Serif Display', serif; }
+
+/* Ambient arka plan deseni */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: -1;
+  background:
+    radial-gradient(ellipse 80% 50% at 70% -10%, rgba(59,130,246,.12) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 0% 80%,  rgba(16,185,129,.07) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* Ana içerik */
+#mainContent {
+  margin-left: var(--sidebar-w);
+  padding: 32px;
+  min-height: 100vh;
+  transition: margin-left .3s;
+}
+
+/* Üst bar */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.topbar h2 { font-size: 1.6rem; margin: 0; }
+
+.badge-count {
+  background: rgba(59,130,246,.15);
+  color: var(--accent);
+  border: 1px solid rgba(59,130,246,.3);
+  font-size: .75rem;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,.1); border-radius: 3px; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  #mainContent {
+    margin-left: 0;
+    padding: 20px 16px;
+    padding-top: 70px;
+  }
+}

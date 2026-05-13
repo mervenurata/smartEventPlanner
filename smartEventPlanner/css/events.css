@@ -1,0 +1,49 @@
+/* ============================================================
+   events.css
+   Etkinlik kartları ve kategori rozetleri
+   ============================================================ */
+
+/* Kart animasyonu */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Etkinlik kartı */
+.event-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  margin-bottom: 14px;
+  transition: all .25s;
+  animation: fadeInUp .35s ease both;
+}
+.event-card:hover {
+  background: var(--bg-card-hover);
+  border-color: rgba(255,255,255,.12);
+}
+.event-card.completed { opacity: .5; }
+.event-card.completed .event-title { text-decoration: line-through; }
+
+/* Kategori rozetleri */
+.cat-badge {
+  font-size: .68rem; font-weight: 600; padding: 3px 10px; border-radius: 20px;
+  text-transform: uppercase; letter-spacing: .06em;
+}
+.cat-is     { background: rgba(59,130,246,.15); color: #60a5fa; border: 1px solid rgba(59,130,246,.3); }
+.cat-sosyal { background: rgba(245,158,11,.15);  color: #fbbf24; border: 1px solid rgba(245,158,11,.3); }
+.cat-egitim { background: rgba(16,185,129,.15);  color: #34d399; border: 1px solid rgba(16,185,129,.3); }
+.cat-kisisel{ background: rgba(167,139,250,.15); color: #a78bfa; border: 1px solid rgba(167,139,250,.3); }
+
+/* Kart içi metin */
+.event-title { font-size: 1rem; font-weight: 600; margin-bottom: 4px; }
+.event-date  { font-size: .78rem; color: var(--text-muted); }
+.event-desc  { font-size: .82rem; color: var(--text-muted); margin-top: 8px; line-height: 1.5; }
+
+/* Aksiyon butonları */
+.event-actions .btn { font-size: .75rem; padding: 5px 12px; border-radius: 8px; }
+.btn-done   { background: rgba(16,185,129,.15); border: 1px solid rgba(16,185,129,.3); color: #34d399; }
+.btn-done:hover  { background: rgba(16,185,129,.3); color: #34d399; }
+.btn-delete { background: rgba(239,68,68,.12); border: 1px solid rgba(239,68,68,.25); color: #f87171; }
+.btn-delete:hover { background: rgba(239,68,68,.25); color: #f87171; }
